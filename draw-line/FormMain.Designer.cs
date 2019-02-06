@@ -1,6 +1,6 @@
 ﻿namespace draw_line
 {
-    partial class Form1
+    partial class FormMain
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -28,13 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.workSpace = new System.Windows.Forms.Panel();
+            this.SuspendLayout();
+            // 
+            // workSpace
+            // 
+            this.workSpace.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.workSpace.Location = new System.Drawing.Point(12, 12);
+            this.workSpace.Name = "workSpace";
+            this.workSpace.Size = new System.Drawing.Size(600, 600);
+            this.workSpace.TabIndex = 0;
+            // 
+            // FormMain
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(800, 645);
+            this.Controls.Add(this.workSpace);
+            this.Name = "FormMain";
+            this.Text = "Prinpal";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Panel workSpace;
     }
 }
 
