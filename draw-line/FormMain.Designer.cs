@@ -28,23 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.workSpace = new System.Windows.Forms.Panel();
+            this.workSpace1 = new System.Windows.Forms.Panel();
+            this.workSpace2 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // workSpace
+            // workSpace1
             // 
-            this.workSpace.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.workSpace.Location = new System.Drawing.Point(12, 12);
-            this.workSpace.Name = "workSpace";
-            this.workSpace.Size = new System.Drawing.Size(600, 600);
-            this.workSpace.TabIndex = 0;
+            this.workSpace1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.workSpace1.Location = new System.Drawing.Point(12, 133);
+            this.workSpace1.Name = "workSpace1";
+            this.workSpace1.Size = new System.Drawing.Size(500, 500);
+            this.workSpace1.TabIndex = 0;
+            // 
+            // workSpace2
+            // 
+            this.workSpace2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.workSpace2.Location = new System.Drawing.Point(558, 133);
+            this.workSpace2.Name = "workSpace2";
+            this.workSpace2.Size = new System.Drawing.Size(500, 500);
+            this.workSpace2.TabIndex = 1;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 645);
-            this.Controls.Add(this.workSpace);
+            this.ClientSize = new System.Drawing.Size(1086, 645);
+            this.Controls.Add(this.workSpace2);
+            this.Controls.Add(this.workSpace1);
             this.Name = "FormMain";
             this.Text = "Prinpal";
             this.ResumeLayout(false);
@@ -53,7 +63,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel workSpace;
+        private System.Windows.Forms.Panel workSpace1;
+        private System.Windows.Forms.Panel workSpace2;
     }
 }
 
