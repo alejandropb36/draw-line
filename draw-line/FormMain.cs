@@ -12,8 +12,12 @@ namespace draw_line
 {
     public partial class FormMain : Form
     {
+        private Tuple<Point, Point> line;
+
         public FormMain()
         {
+            line = new Tuple<Point, Point>();
+
             InitializeComponent();
         }
     }
