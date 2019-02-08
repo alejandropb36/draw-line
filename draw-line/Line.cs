@@ -11,6 +11,7 @@ namespace draw_line
         private Point initialPoint;
         private Point finalPoint;
 
+
         public void setInitialPoint(Point point)
         {
             this.initialPoint = point;
