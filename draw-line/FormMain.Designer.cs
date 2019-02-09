@@ -37,6 +37,7 @@
             // 
             // workSpace1
             // 
+            this.workSpace1.BackColor = System.Drawing.SystemColors.Window;
             this.workSpace1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.workSpace1.Location = new System.Drawing.Point(12, 133);
             this.workSpace1.Name = "workSpace1";
@@ -46,6 +47,7 @@
             // 
             // workSpace2
             // 
+            this.workSpace2.BackColor = System.Drawing.SystemColors.Window;
             this.workSpace2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.workSpace2.Location = new System.Drawing.Point(558, 133);
             this.workSpace2.Name = "workSpace2";

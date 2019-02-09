@@ -13,8 +13,8 @@ namespace draw_line
 
         public Point ()
         {
-            x = -1;
-            y = -1;
+            this.x = -1;
+            this.y = -1;
         }
 
         public Point (int x,int y)
