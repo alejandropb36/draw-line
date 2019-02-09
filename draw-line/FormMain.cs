@@ -75,8 +75,48 @@ namespace draw_line
 
         private void DDA(Panel workSpace, Line line)
         {
-            int incremento = 1;
-            float m;
+            int incremento;
+            int xi;
+            int yi;
+            int xf;
+            int yf;
+            double m;
+            double b;
+            
+
+            incremento = 1;
+            xi = line.getInitialPoint().getX();
+            yi = line.getInitialPoint().getY();
+            xf = line.getFinalPoint().getX();
+            yf = line.getFinalPoint().getY();
+            if(xi == xf)
+            {
+
+            }
+            else
+            {
+                m = Math.Abs((yf - yi) / (xf - xi));
+                b = yi - (xi * m);
+                if(m > 1)
+                {
+                    int xact;
+
+                    if (yf < yi)
+                    {
+                        incremento = -1;
+                    }
+                    for (int i = yi; i != yf; i += incremento)
+                    {
+                        xact = Convert.ToInt32(-(b / m));
+                        workSpace.
+                        
+                    }
+                }
+            }
+            
+
+ 
+
 
 
 
