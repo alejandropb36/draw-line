@@ -27,6 +27,42 @@ namespace draw_line
             finalX = finalY = -1;
         }
 
+        private void drawGrid(Panel panel)
+        {
+            int x, y, height, width, linesWidth, linesHeight;
+            Pen pen = new Pen(Color.LightGray, 1);
+            const int sizeSquare = 20;
+
+            height = panel.Height;
+            width = panel.Width;
+            linesWidth = width / sizeSquare;
+            linesHeight = height / sizeSquare;
+
+            y = 0;
+            for (int i = 0; i < linesWidth; i++)
+            {
+                x = sizeSquare * i;
+                panel.CreateGraphics().DrawLine(pen, x, y, x, height);
+            }
+
+            x = 0;
+            for (int i = 0; i < linesHeight; i++)
+            {
+                y = sizeSquare * i;
+                panel.CreateGraphics().DrawLine(pen, x, y, width, y);
+            }
+        }
+
+        private void workSpace1_Paint(object sender, PaintEventArgs e)
+        {
+            drawGrid(workSpace1);
+        }
+
+        private void workSpace2_Paint(object sender, PaintEventArgs e)
+        {
+            drawGrid(workSpace2);
+        }
+
         private void buttonClear_Click(object sender, EventArgs e)
         {
             workSpace1.Refresh();
@@ -55,71 +91,138 @@ namespace draw_line
                 finalY = e.Y;
                 finalPoint = new Point(finalX, finalY);
                 line.setFinalPoint(finalPoint);
-            }
 
-            // DDA(workSpace1, line);
-            // Bresenham(workSpace2, line);
+                Console.WriteLine("------------- Puntos ------------------");
+                Console.WriteLine("punto inicial: (" + initialX + ", " + initialY + ")");
+                Console.WriteLine("punto final: (" + finalX + ", " + finalY + ")");
 
-            // Esto es para que se vuelva a cumplir el proceso de 
-            // las coordenadas
-            if(finalX != -1)
-            {
+                DDA(workSpace1, line);
+                bresenham(workSpace2, line);
                 initialX = -1;
             }
-
-            // Esto solo es de prueba
-            Console.WriteLine("------------- Puntos ------------------");
-            Console.WriteLine("punto inicial: (" + initialX + ", " + initialY + ")");
-            Console.WriteLine("punto final: (" + finalX + ", " + finalY + ")");
+            
         }
 
         private void DDA(Panel workSpace, Line line)
         {
+            double xi, yi;
+            double xf, yf;
+            double deltaX, deltaY;
+            double m, b;
             int incremento;
-            int xi;
-            int yi;
-            int xf;
-            int yf;
-            double m;
-            double b;
-            
+            int xact, yact;
+            Pen pen;
+
+            pen = new Pen(Color.Red, 1);
 
             incremento = 1;
-            xi = line.getInitialPoint().getX();
-            yi = line.getInitialPoint().getY();
-            xf = line.getFinalPoint().getX();
-            yf = line.getFinalPoint().getY();
-            if(xi == xf)
-            {
 
+            xi = Convert.ToDouble(line.getInitialPoint().getX());
+            yi = Convert.ToDouble(line.getInitialPoint().getY());
+            xf = Convert.ToDouble(line.getFinalPoint().getX());
+            yf = Convert.ToDouble(line.getFinalPoint().getY());
+
+            deltaX = xf - xi;
+            deltaY = yf - yi;
+
+            if(Math.Abs(deltaX) > Math.Abs(deltaY))
+            {
+                m = deltaY / deltaX;
+                b = yi - (m * xi);
+                if(deltaX < 0)
+                {
+                    incremento = -1;
+                }
+                else
+                {
+                    incremento = 1;
+                }
+
+                for(int i = Convert.ToInt32(xi); i != xf; i += incremento)
+                {
+                    yact = Convert.ToInt32(Math.Round((m * i) + b));
+                    workSpace.CreateGraphics().DrawEllipse(pen, i, yact, 1, 1);
+                }
             }
             else
             {
-                m = Math.Abs((yf - yi) / (xf - xi));
-                b = yi - (xi * m);
-                if(m > 1)
+                if(deltaY != 0)
                 {
-                    int xact;
+                    m = deltaX / deltaY;
+                    b = xi - (m * yi);
 
-                    if (yf < yi)
+                    if(deltaY < 0)
                     {
                         incremento = -1;
                     }
-                    for (int i = yi; i != yf; i += incremento)
+                    else
                     {
-                        xact = Convert.ToInt32(-(b / m));
-                        workSpace.
-                        
+                        incremento = 1;
+                    }
+
+                    for(int i = Convert.ToInt32(yi); i != yf; i += incremento)
+                    {
+                        xact = Convert.ToInt32(Math.Round((m * i) + b));
+                        workSpace.CreateGraphics().DrawEllipse(pen, xact, i, 1, 1);
                     }
                 }
             }
-            
+        }
 
- 
+        private void bresenham(Panel workSpace, Line line)
+        {
+            int xi, yi;
+            int xf, yf;
+            int deltaX, deltaY;
+            int p;
+            int x, y, xf2;
+            Pen pen;
 
+            pen = new Pen(Color.Green, 1);
 
+            xi = line.getInitialPoint().getX();
+            yi = line.getInitialPoint().getY();
+            xf = line.getFinalPoint().getX();
+            yf = line.getFinalPoint().getX();
 
+            deltaX = Math.Abs(xf - xi);
+            deltaY = Math.Abs(yf - yi);
+
+            p = (2 * deltaY) - deltaX;
+
+            if(xi > xf)
+            {
+                x = xf;
+                y = yf;
+                xf2 = xi;
+            }
+            else
+            {
+                x = xi;
+                y = yi;
+                xf2 = xf;
+            }
+
+            workSpace.CreateGraphics().DrawEllipse(pen, x, y, 1, 1);
+
+            while(x < xf2)
+            {
+                x++;
+                if(p < 0)
+                {
+                    workSpace.CreateGraphics().DrawEllipse(pen, x, y, 1, 1);
+                    p = p + (2 * deltaY);
+                }
+                else
+                {
+                    y++;
+                    workSpace.CreateGraphics().DrawEllipse(pen, x, y, 1, 1);
+                    p = p + (2 * deltaY) - (2 * deltaX);
+                }
+            }
 
         }
+
+        
     }
 }

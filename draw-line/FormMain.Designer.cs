@@ -43,6 +43,7 @@
             this.workSpace1.Name = "workSpace1";
             this.workSpace1.Size = new System.Drawing.Size(500, 500);
             this.workSpace1.TabIndex = 0;
+            this.workSpace1.Paint += new System.Windows.Forms.PaintEventHandler(this.workSpace1_Paint);
             this.workSpace1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.workSpace1_MouseClick);
             // 
             // workSpace2
@@ -53,6 +54,7 @@
             this.workSpace2.Name = "workSpace2";
             this.workSpace2.Size = new System.Drawing.Size(500, 500);
             this.workSpace2.TabIndex = 1;
+            this.workSpace2.Paint += new System.Windows.Forms.PaintEventHandler(this.workSpace2_Paint);
             // 
             // label1
             // 
