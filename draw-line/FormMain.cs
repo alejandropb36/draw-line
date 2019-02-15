@@ -58,25 +58,28 @@ namespace draw_line
             drawGrid(workSpace1);
         }
 
+        /*
         private void workSpace2_Paint(object sender, PaintEventArgs e)
         {
-            drawGrid(workSpace2);
         }
+        */
 
         private void buttonClear_Click(object sender, EventArgs e)
         {
             workSpace1.Refresh();
-            workSpace2.Refresh();
-            line.getInitialPoint().setX(-1);
-            line.getInitialPoint().setY(-1);
-            line.getFinalPoint().setX(-1);
-            line.getFinalPoint().setY(-1);
+            initialX = initialY = -1;
+            finalX = finalY = -1;
+            line.getInitialPoint().setX(initialX);
+            line.getInitialPoint().setY(initialY);
+            line.getFinalPoint().setX(finalX);
+            line.getFinalPoint().setY(finalY);
         }
 
         private void workSpace1_MouseClick(object sender, MouseEventArgs e)
         {
             Point initialPoint;
             Point finalPoint;
+            Pen pen = new Pen(Color.Orange, 3);
 
             if (initialX == -1)
             {
@@ -84,6 +87,7 @@ namespace draw_line
                 initialY = e.Y;
                 initialPoint = new Point(initialX, initialY);
                 line.setInitialPoint(initialPoint);
+                workSpace1.CreateGraphics().DrawEllipse(pen, initialX, initialY, 3, 3);
             }
             else
             {
@@ -91,14 +95,16 @@ namespace draw_line
                 finalY = e.Y;
                 finalPoint = new Point(finalX, finalY);
                 line.setFinalPoint(finalPoint);
+                workSpace1.CreateGraphics().DrawEllipse(pen, finalX, finalY, 3, 3);
 
                 Console.WriteLine("------------- Puntos ------------------");
                 Console.WriteLine("punto inicial: (" + initialX + ", " + initialY + ")");
                 Console.WriteLine("punto final: (" + finalX + ", " + finalY + ")");
 
                 DDA(workSpace1, line);
-                bresenham(workSpace2, line);
-                initialX = -1;
+                bresenham(workSpace1, line);
+                initialX = initialY = -1;
+                finalX = finalY = -1;
             }
             
         }
