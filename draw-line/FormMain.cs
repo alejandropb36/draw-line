@@ -123,10 +123,10 @@ namespace draw_line
 
             incremento = 1;
 
-            xi = Convert.ToDouble(line.getInitialPoint().getX());
-            yi = Convert.ToDouble(line.getInitialPoint().getY());
-            xf = Convert.ToDouble(line.getFinalPoint().getX());
-            yf = Convert.ToDouble(line.getFinalPoint().getY());
+            xi = (double)(line.getInitialPoint().getX());
+            yi = (double)(line.getInitialPoint().getY());
+            xf = (double)(line.getFinalPoint().getX());
+            yf = (double)(line.getFinalPoint().getY());
 
             deltaX = xf - xi;
             deltaY = yf - yi;
@@ -144,9 +144,9 @@ namespace draw_line
                     incremento = 1;
                 }
 
-                for(int i = Convert.ToInt32(xi); i != xf; i += incremento)
+                for(int i = (int)xi; i != xf; i += incremento)
                 {
-                    yact = Convert.ToInt32(Math.Round((m * i) + b));
+                    yact = (int)(Math.Round((m * i) + b));
                     workSpace.CreateGraphics().DrawEllipse(pen, i, yact, 1, 1);
                 }
             }
@@ -166,9 +166,9 @@ namespace draw_line
                         incremento = 1;
                     }
 
-                    for(int i = Convert.ToInt32(yi); i != yf; i += incremento)
+                    for(int i = (int)yi; i != yf; i += incremento)
                     {
-                        xact = Convert.ToInt32(Math.Round((m * i) + b));
+                        xact = (int)(Math.Round((m * i) + b));
                         workSpace.CreateGraphics().DrawEllipse(pen, xact, i, 1, 1);
                     }
                 }
@@ -177,54 +177,39 @@ namespace draw_line
 
         private void bresenham(Panel workSpace, Line line)
         {
-            int xi, yi;
-            int xf, yf;
-            int deltaX, deltaY;
-            int p;
-            int x, y, xf2;
-            Pen pen;
+            Pen pen = new Pen(Color.Green, 1);
+            double xi = (double)line.getInitialPoint().getX();
+            double yi = (double)line.getInitialPoint().getY();
+            double xf = (double)line.getFinalPoint().getX();
+            double yf = (double)line.getFinalPoint().getY();
 
-            pen = new Pen(Color.Green, 1);
+            double difY = (yf - yi);
+            double difX = (xf - xi);
+            double difY2 = difY * 2.0;
+            double difX2 = difX * 2.0;
+            double m = (difY / difX);
+            double b = yi - (m * xi);
+            double c = (-difX2 * b) + difX - difY2;
+            double x_k = xi;
+            double y_k = yi;
+            double p_k = 2.0 * yi * difX - difY * 2.0 * xi + c;
 
-            xi = line.getInitialPoint().getX();
-            yi = line.getInitialPoint().getY();
-            xf = line.getFinalPoint().getX();
-            yf = line.getFinalPoint().getX();
 
-            deltaX = Math.Abs(xf - xi);
-            deltaY = Math.Abs(yf - yi);
 
-            p = (2 * deltaY) - deltaX;
-
-            if(xi > xf)
+            while(x_k < xf)
             {
-                x = xf;
-                y = yf;
-                xf2 = xi;
-            }
-            else
-            {
-                x = xi;
-                y = yi;
-                xf2 = xf;
-            }
-
-            workSpace.CreateGraphics().DrawEllipse(pen, x, y, 1, 1);
-
-            while(x < xf2)
-            {
-                x++;
-                if(p < 0)
+                if(p_k >= 0)
                 {
-                    workSpace.CreateGraphics().DrawEllipse(pen, x, y, 1, 1);
-                    p = p + (2 * deltaY);
+                    p_k = p_k - difY2;
+                    workSpace.CreateGraphics().DrawEllipse(pen, (int)x_k, (int)y_k, 1, 1);
                 }
                 else
                 {
-                    y++;
-                    workSpace.CreateGraphics().DrawEllipse(pen, x, y, 1, 1);
-                    p = p + (2 * deltaY) - (2 * deltaX);
+                    y_k = y_k + 1;
+                    p_k = p_k - difY2 + difX2;
+                    workSpace.CreateGraphics().DrawEllipse(pen, (int)x_k, (int)y_k, 1, 1);
                 }
+                x_k++;
             }
 
         }
