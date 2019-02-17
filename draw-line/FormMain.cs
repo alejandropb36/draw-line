@@ -182,34 +182,74 @@ namespace draw_line
             double yi = (double)line.getInitialPoint().getY();
             double xf = (double)line.getFinalPoint().getX();
             double yf = (double)line.getFinalPoint().getY();
+            double dx, dx2;
+            double dy, dy2;
+            double x_k, y_k, p_k;
+            int stepx, stepy;
 
-            double difY = (yf - yi);
-            double difX = (xf - xi);
-            double difY2 = difY * 2.0;
-            double difX2 = difX * 2.0;
-            double m = (difY / difX);
-            double b = yi - (m * xi);
-            double c = (-difX2 * b) + difX - difY2;
-            double x_k = xi;
-            double y_k = yi;
-            double p_k = 2.0 * yi * difX - difY * 2.0 * xi + c;
+            dy = (yf - yi);
+            dx = (xf - xi);
 
-
-
-            while(x_k < xf)
+            if (dy < 0)
             {
-                if(p_k >= 0)
+                dy = -dy;
+                stepy = -1;
+            }
+            else
+            {
+                stepy = 1;
+            }
+
+            if (dx < 0)
+            {
+                dx = -dx;
+                stepx = -1;
+            }
+            else
+            {
+                stepx = 1;
+            }
+            
+            x_k = xi;
+            y_k = yi;
+            dy2 = (dy * 2.0);
+            dx2 = (dx * 2.0);
+            
+            if(dx > dy)
+            {
+                p_k = dy2 - dx;
+                while(x_k != xf)
                 {
-                    p_k = p_k - difY2;
+                    x_k += stepx;
+                    if(p_k <= 0)
+                    {
+                        p_k += dy2;
+                    }
+                    else
+                    {
+                        y_k += stepy;
+                        p_k += dy2 - dx2;
+                    }
                     workSpace.CreateGraphics().DrawEllipse(pen, (int)x_k, (int)y_k, 1, 1);
                 }
-                else
+            }
+            else
+            {
+                p_k = dx2 - dy;
+                while (y_k != yf)
                 {
-                    y_k = y_k + 1;
-                    p_k = p_k - difY2 + difX2;
+                    y_k += stepy;
+                    if (p_k <= 0)
+                    {
+                        p_k += dx2;
+                    }
+                    else
+                    {
+                        x_k += stepx;
+                        p_k = dx2 - dy2;
+                    }
                     workSpace.CreateGraphics().DrawEllipse(pen, (int)x_k, (int)y_k, 1, 1);
                 }
-                x_k++;
             }
 
         }
