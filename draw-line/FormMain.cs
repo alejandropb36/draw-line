@@ -97,21 +97,72 @@ namespace draw_line
             workSpace.Image = bmp;
         }
 
-        /*
 
         private void bresenham(PictureBox workSpace, Point initial, Point final)
         {
-            double xi = (double)initial.X;
-            double yi = (double)initial.Y;
-            double xf = (double)final.X;
-            double yf = (double)final.Y;
-            double dx, dx2;
-            double dy, dy2;
-            double x_k, y_k, p_k;
+            int dx = final.X - initial.X;
+            int dy = final.Y - initial.Y;
+            double m = (double)dy / (double)dx;
+            int incremento = 1;
+            int dy2, dx2, pk, xk, yk;
+            
+
+            dx = Math.Abs(dx);
+            dy = Math.Abs(dy);
+
+            dy2 = dy * 2;
+            dx2 = dx * 2;
+            pk = dy2 - dx;
+            xk = initial.X;
+            yk = initial.Y;
+
+            
+
+            if(m > 0)
+            {
+                for (int i = 0; i < dx; i+= incremento)
+                {
+                    bmp.SetPixel(xk, yk, Color.Orange);
+                    while (pk >= 0)
+                    {
+                        yk++;
+                        pk = pk - dx2;
+                        bmp.SetPixel(xk, yk, Color.Orange);
+                    }
+                    xk++;
+                    pk = pk + dy2;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < dx; i += incremento)
+                {
+                    bmp.SetPixel(xk, yk, Color.Orange);
+                    while (pk >= 0)
+                    {
+                        yk--;
+                        pk = pk - dx2;
+                        bmp.SetPixel(xk, yk, Color.Orange);
+                    }
+                    xk++;
+                    pk = pk + dy2;
+                }
+            }
+
+            workSpace.Image = bmp;
+        }
+
+        /*
+        private void bresenham(PictureBox workSpace, Point initial, Point final)
+        {
+            
+            int dx, dx2;
+            int dy, dy2;
+            int xk, yk, pk;
             int stepx, stepy;
 
-            dy = (yf - yi);
-            dx = (xf - xi);
+            dy = (final.Y - initial.Y);
+            dx = (final.X - initial.X);
 
             if (dy < 0)
             {
@@ -133,52 +184,52 @@ namespace draw_line
                 stepx = 1;
             }
 
-            x_k = xi;
-            y_k = yi;
-            dy2 = (dy * 2.0);
-            dx2 = (dx * 2.0);
+            xk = initial.X;
+            yk = initial.Y;
+            dy2 = dy * 2;
+            dx2 = dx * 2;
 
             if (dx > dy)
             {
-                p_k = dy2 - dx;
-                while (x_k != xf)
+                pk = dy2 - dx;
+                while (xk <= dx)
                 {
-                    x_k += stepx;
-                    if (p_k <= 0)
+                    xk += stepx;
+                    if (pk <= 0)
                     {
-                        p_k += dy2;
+                        pk += dy2;
                     }
                     else
                     {
-                        y_k += stepy;
-                        p_k += dy2 - dx2;
+                        yk += stepy;
+                        pk += dy2 - dx;
                     }
-                    bmp.SetPixel((int)x_k, (int)y_k, Color.Orange);
+                    bmp.SetPixel(xk, yk, Color.Orange);
                 }
             }
             else
             {
-                p_k = dx2 - dy;
-                while (y_k != yf)
+                pk = dx2 - dy;
+                while (yk <= dy)
                 {
-                    y_k += stepy;
-                    if (p_k <= 0)
+                    yk += stepy;
+                    if (pk <= 0)
                     {
-                        p_k += dx2;
+                        pk += dx2;
                     }
                     else
                     {
-                        x_k += stepx;
-                        p_k = dx2 - dy2;
+                        xk += stepx;
+                        pk = dx2 - dy;
                     }
-                    bmp.SetPixel((int)x_k, (int)y_k, Color.Orange);
+                    bmp.SetPixel(xk, yk, Color.Orange);
                 }
             }
             workSpace.Image = bmp;
 
         }
-        */
-        
+
+        /*
         private void bresenham(PictureBox workSpace, Point initial, Point final)
         {
             double xi = (double)initial.X;
@@ -256,6 +307,7 @@ namespace draw_line
             }
             workSpace.Image = bmp;
         }
+        */
 
         private void workSpace_MouseClick(object sender, MouseEventArgs e)
         {
