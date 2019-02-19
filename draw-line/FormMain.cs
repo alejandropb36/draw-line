@@ -32,7 +32,7 @@ namespace draw_line
             workSpace.Image = bmp;
         }
 
-        private void DDA(PictureBox workSpace, Point initial, Point final)
+        private void DDA(Point initial, Point final)
         {
             double xi, yi;
             double xf, yf;
@@ -96,64 +96,29 @@ namespace draw_line
 
             workSpace.Image = bmp;
         }
-
-
-        private void bresenham(PictureBox workSpace, Point initial, Point final)
+        
+        private void swap(ref int a,ref int b)
         {
-            int dx = final.X - initial.X;
-            int dy = final.Y - initial.Y;
-            double m = (double)dy / (double)dx;
-            int incremento = 1;
-            int dy2, dx2, pk, xk, yk;
-            
+            int aux = a;
+            a = b;
+            b = aux;
+        }
 
-            dx = Math.Abs(dx);
-            dy = Math.Abs(dy);
+        private void bresenham(Point initial, Point final)
+        {
+            int dx = Math.Abs(final.X - initial.X);
+            int dy = Math.Abs(final.Y - initial.Y);
 
-            dy2 = dy * 2;
-            dx2 = dx * 2;
-            pk = dy2 - dx;
-            xk = initial.X;
-            yk = initial.Y;
-
-            
-
-            if(m > 0)
+            if(dx >= dy)
             {
-                for (int i = 0; i < dx; i+= incremento)
-                {
-                    bmp.SetPixel(xk, yk, Color.Orange);
-                    while (pk >= 0)
-                    {
-                        yk++;
-                        pk = pk - dx2;
-                        bmp.SetPixel(xk, yk, Color.Orange);
-                    }
-                    xk++;
-                    pk = pk + dy2;
-                }
+                //bresenhamX
             }
             else
             {
-                for (int i = 0; i < dx; i += incremento)
-                {
-                    bmp.SetPixel(xk, yk, Color.Orange);
-                    while (pk >= 0)
-                    {
-                        yk--;
-                        pk = pk - dx2;
-                        bmp.SetPixel(xk, yk, Color.Orange);
-                    }
-                    xk++;
-                    pk = pk + dy2;
-                }
+                //bresenhamY
             }
 
-            workSpace.Image = bmp;
         }
-
-        
-
 
         private void workSpace_MouseClick(object sender, MouseEventArgs e)
         {
@@ -175,8 +140,8 @@ namespace draw_line
                 Console.WriteLine("punto inicial: (" + initial.X + ", " + initial.Y + ")");
                 Console.WriteLine("punto final: (" + final.X + ", " + final.Y + ")");
 
-                DDA(workSpace, initial, final);
-                bresenham(workSpace, initial, final);
+                DDA(initial, final);
+                bresenham(initial, final);
                 initial.X = initial.Y = -1;
                 final.X = final.Y = -1;
             }
