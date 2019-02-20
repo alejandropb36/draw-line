@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+// Add for use Timer
+using System.Diagnostics;
+
 
 namespace draw_line
 {
@@ -28,19 +31,28 @@ namespace draw_line
             initial.X = initial.Y = -1;
             final.X = final.Y = -1;
 
-            bmp = new Bitmap(500, 500);
+            Graphics g = Graphics.FromImage(bmp);
+            g.FillRectangle(Brushes.White, 0, 0, 500, 500);
             workSpace.Image = bmp;
+
+            labelAdd.Text = "ADD: 0 s";
+            labelBresenham.Text = "Bresenham: 0 s";
         }
 
+        /*
+         * Algoritmo de trasado de lineas con DDA
+         */
         private void DDA(Point initial, Point final)
         {
+            Stopwatch sw = new Stopwatch();
             double xi, yi;
             double xf, yf;
             double deltaX, deltaY;
             double m, b;
             int incremento;
             int xact, yact;
-            
+
+            sw.Start();
             incremento = 1;
 
             xi = (double)initial.X;
@@ -95,6 +107,7 @@ namespace draw_line
             }
 
             workSpace.Image = bmp;
+            labelAdd.Text = "ADD: " + String.Format("{0}", sw.Elapsed.TotalMilliseconds) + " s";
         }
         
         private void swap(ref int a,ref int b)
@@ -104,22 +117,113 @@ namespace draw_line
             b = aux;
         }
 
+        /*
+         * Algoritmo de trasado de lineas con Bresenham o MidPoint
+         */
         private void bresenham(Point initial, Point final)
         {
-            int dx = Math.Abs(final.X - initial.X);
-            int dy = Math.Abs(final.Y - initial.Y);
+            Stopwatch sw = new Stopwatch();
+            int xi = initial.X;
+            int yi = initial.Y;
+            int xf = final.X;
+            int yf = final.Y;
+            int deltaX = Math.Abs(xf - xi);
+            int deltaY = Math.Abs(yf - yi);
+            int deltaX2 = 0;
+            int deltaY2 = 0;
+            int pk = 0;
 
-            if(dx >= dy)
+            sw.Start();
+            deltaY2 = deltaY * 2;
+            deltaX2 = deltaX * 2;
+
+            if (deltaX >= deltaY)
             {
-                //bresenhamX
+                /*
+                 * Bresenham iteraciones en x
+                 * P_k += 2DeltaY - DeltaX;
+                 * P_k+1 += 2DeltaY;
+                 * ó P_k+1 = 2DeltaY - 2DeltaX;
+                 */
+                pk = deltaY2 - deltaX;
+
+                if(xi > xf)
+                {
+                    swap(ref xi, ref xf);
+                    swap(ref yi, ref yf);
+                }
+
+                bmp.SetPixel(xi, yi, Color.Orange);
+
+                while( xi < xf)
+                {
+                    if(pk < 0)
+                    {
+                        pk += deltaY2;
+                    }
+                    else
+                    {
+                        if(yi < yf)
+                        {
+                            yi = yi + 1;
+                        }
+                        else
+                        {
+                            yi = yi - 1;
+                        }
+                        pk += deltaY2 - deltaX2;
+                    }
+                    xi = xi + 1;
+                    bmp.SetPixel(xi, yi, Color.Orange);
+                }
             }
             else
             {
-                //bresenhamY
-            }
+                /*
+                 * Bresenham iteraciones en y
+                 * P_k += 2DeltaX - DeltaY;
+                 * P_k+1 += 2DeltaX;
+                 * ó P_k+1 = 2DeltaX - 2DeltaY;
+                 */
+                pk = deltaX2 - deltaY;
 
+                if (yi > yf)
+                {
+                    swap(ref xi, ref xf);
+                    swap(ref yi, ref yf);
+                }
+
+                bmp.SetPixel(xi, yi, Color.Orange);
+
+                while (yi < yf)
+                {
+                    if (pk < 0)
+                    {
+                        pk += deltaX2;
+                    }
+                    else
+                    {
+                        if (xi < xf)
+                        {
+                            xi = xi + 1;
+                        }
+                        else
+                        {
+                            xi = xi - 1;
+                        }
+                        pk += deltaX2 - deltaY2;
+                    }
+                    yi = yi + 1;
+                    bmp.SetPixel(xi, yi, Color.Orange);
+                }
+            }
+            workSpace.Image = bmp;
+            labelBresenham.Text = "Bresenham: " + String.Format("{0}", sw.Elapsed.TotalMilliseconds) + " s";
         }
 
+        /*
+         * Captura de Puntos en el area de trabajo
+         */
         private void workSpace_MouseClick(object sender, MouseEventArgs e)
         {
             Pen pen = new Pen(Color.Orange, 3);
