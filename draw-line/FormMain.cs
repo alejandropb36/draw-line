@@ -17,12 +17,14 @@ namespace draw_line
     {
         Point initial, final;
         Bitmap bmp;
+        Stopwatch sw;
 
         public FormMain()
         {
             initial = new Point(-1, -1);
             final = new Point(-1, -1);
             bmp = new Bitmap(500, 500);
+            sw = new Stopwatch();
             InitializeComponent();
         }
 
@@ -44,7 +46,6 @@ namespace draw_line
          */
         private void DDA(Point initial, Point final)
         {
-            Stopwatch sw = new Stopwatch();
             double xi, yi;
             double xf, yf;
             double deltaX, deltaY;
@@ -52,7 +53,7 @@ namespace draw_line
             int incremento;
             int xact, yact;
 
-            sw.Start();
+            sw.Restart();
             incremento = 1;
 
             xi = (double)initial.X;
@@ -121,8 +122,7 @@ namespace draw_line
          * Algoritmo de trasado de lineas con Bresenham o MidPoint
          */
         private void bresenham(Point initial, Point final)
-        {
-            Stopwatch sw = new Stopwatch();
+        { 
             int xi = initial.X;
             int yi = initial.Y;
             int xf = final.X;
@@ -133,7 +133,7 @@ namespace draw_line
             int deltaY2 = 0;
             int pk = 0;
 
-            sw.Start();
+            sw.Restart();
             deltaY2 = deltaY * 2;
             deltaX2 = deltaX * 2;
 
